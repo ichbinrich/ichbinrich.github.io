@@ -1,3 +1,4 @@
+title: MsC. Eng. Ricardo Martinez Personal Page
 # Welcome to the personal portfolio and info page of Ms.C. Eng. Ricardo Martinez.
 ## Disclaimer: This is under construction.
 ## At the moment it only contains an HTML5 Canvas JS test.
