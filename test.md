@@ -1,3 +1,6 @@
+---
+title: Test page with MD
+---
 # Test page to get basic elements working
 
 ## Scope
