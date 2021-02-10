@@ -9,3 +9,4 @@ title: Test page with MD
 1. Links
 1. Title and Favicon
 1. JS Script inclusion
+1. Jekyll elements
