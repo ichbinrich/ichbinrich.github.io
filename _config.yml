@@ -1,3 +1,4 @@
-baseurl: /
+baseurl: "/"
 exclude: ['README.md']
 title: Ricardo Martinez's Personal Webpage
+github_username: ichbinrich
