@@ -1,4 +1,5 @@
-baseurl: "/"
+baseurl: ""
 exclude: ['README.md']
-title: Professional Profile Website MsC Eng Ricardo Martinez
 github_username: ichbinrich
+permalink: pretty
+title: Ricardo Martinez
