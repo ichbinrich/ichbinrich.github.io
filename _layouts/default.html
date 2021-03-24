@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
   </head>
   <body>
+    <header class="main-header">
+        <h1 class="{% if page.home %}home-title{% else %}header-title container{% endif %}">
+          {% if page.home %}{{ site.title }}{% else %}{{ page.title }}{% endif %}
+        </h1>
+    </header>
     {{content}}
+    <footer>
+    </footer>
   </body>
 </html>
