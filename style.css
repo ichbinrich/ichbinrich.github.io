@@ -66,9 +66,12 @@ footer{
   color: #ccc;
   font-size: 4em;
 }
-
 .container {
   max-width: 900px;
   margin: 0 auto;
   padding: 0 2em;
+}
+.copyright{
+  padding-right: 5%;
+  text-align: right;
 }
