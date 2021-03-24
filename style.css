@@ -19,12 +19,42 @@ body{
 header{
   margin: 0;
   padding: 0;
-}
-.main-header {
   background-color: #333;
   padding-top: 0;
   padding-bottom: 25px;
 }
+
+footer{
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  font-size: 0.75em;
+}
+
+.nav li{
+  padding: 0;
+  display: inline;
+}
+
+.nav a{
+  display: inline-block;
+  text-decoration: none;
+  padding: 0.5em;
+}
+
+.nav a:hover{
+  background-color: #ccc;
+  color: #333;
+}
+
+.nav ul{
+  padding-right: 5%;
+  margin: 0;
+  text-align: right;
+}
+
 .header-title{
   text-align: left;
   color: #ccc;

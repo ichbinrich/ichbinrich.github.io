@@ -1,0 +1,12 @@
+- name: About Me
+  link: \#about
+  id: about
+- name: My Work Experience
+  link: \#work_experience
+  id: work_experience
+- name: My Personal Projects
+  link: \#projects
+  id: projects
+- name: Contact
+  link: \#contact
+  id: about
