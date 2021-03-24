@@ -2,6 +2,8 @@
   box-sizing: border-box;
   font-family: sans-serif;
   color: #666;
+  margin: 0;
+  padding: 0;
 }
 html {
   background-color: white;
@@ -29,12 +31,12 @@ header{
   font-size: 2em;
   padding: 1em;
 }
-
 .home-title{
   text-align: center;
   color: #ccc;
   font-size: 4em;
 }
+
 .container {
   max-width: 900px;
   margin: 0 auto;
