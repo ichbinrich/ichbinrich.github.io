@@ -26,9 +26,9 @@ Simplified version of the Homepage.
   - Design the Wireframe and the elements.
   - Use simple HTML.
   - Define the Jekyll Structure.
-1. **Enhance Design.** From the visual design perspective, enhance the website.
+2. **Enhance Design.** From the visual design perspective, enhance the website.
   - Basic CSS Styling.
-1. **Work Experience.** Section with the details of my work experience.
+3. **Work Experience.** Section with the details of my work experience.
 
 ## Use
 ***#TODO***
