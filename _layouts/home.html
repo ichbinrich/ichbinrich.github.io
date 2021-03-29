@@ -1,0 +1,11 @@
+---
+layout: default
+---
+<div class="container">
+  {% for section in site.data.navigation %}
+    <div class="">
+      <h1 id="{{ section.id }}">{{ section.name }}</h1>
+      Some Text
+    </div>
+  {% endfor %}
+</div>
