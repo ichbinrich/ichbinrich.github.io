@@ -1,6 +1,10 @@
 ---
 title: Home
-layout: home
-home: true
 ---
-# Homepage
+## MSc. Eng. Ricardo Martinez.
+
+### IT Professional.
+
+Further information soon.
+
+[Contact](mailto:msc.ricardomartinez@yahoo.com)
