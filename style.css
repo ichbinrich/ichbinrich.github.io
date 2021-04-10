@@ -19,3 +19,8 @@ a {
   text-align: left;
   font-size: 3em;
 }
+
+.content{
+  max-width: 640px;
+  margin: 1.5em;
+}
