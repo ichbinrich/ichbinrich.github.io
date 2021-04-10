@@ -1,0 +1,15 @@
+html {
+  padding: 0;
+  margin: 0;
+  font-family: monospace;
+  color: #33ff33;
+  background-color: black;
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: #ffb000;
+}
