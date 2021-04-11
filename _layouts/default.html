@@ -5,22 +5,14 @@
     <metahttp-equiv = 'cache-control' content = 'no-cache'>
     <title>{{site.title}}</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
     <script>
-      var i = 0;
-      var txt = "Further information soon. :)";
-      var speed = 50;
-      var on = false;
-
-      function typeWriter() {
-        if (i < txt.length) {
-          document.getElementById("text").innerHTML += txt.charAt(i);
-          i++;
-          setTimeout(typeWriter, speed);
-        }
-      }
+      var message ="For further information, contact me!";
+      var id = "text";
+      var delay = 150;
     </script>
   </head>
-  <body onload="typeWriter()">
+  <body onload="typeWriter(id,message,delay)">
     <div id="text" class="content">
       {{content}}
     </div>
