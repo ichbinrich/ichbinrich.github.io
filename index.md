@@ -16,4 +16,4 @@ Personal projects vary in languages, technologies, and approaches, including Jav
 
 Master degree in Computer Science from [EIT](https://www.eitdigital.eu/) in Distributed Systems and Services at [Universitè de Rennes 1](https://istic.univ-rennes1.fr/) and [TU Berlin](https://www.tu-berlin.de), Bachelor degree in Computer Engineering at [FI UNAM](https://www.ingenieria.unam.mx/EN/).
 
-[E-Mail.](mailto:msc.ricardomartinez@yahoo.com)
+[E-Mail to contact me.](mailto:msc.ricardomartinez@yahoo.com)
