@@ -4,16 +4,12 @@
     <meta charset="utf-8">
     <title>{{site.title}}</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
-    <script>
-      var message ="For further information, contact me!";
-      var id = "text";
-      var delay = 150;
-    </script>
   </head>
-  <body onload="typeWriter(id,message,delay)">
-    <div id="text" class="content">
+  <body>
+    <div class="content">
       {{content}}
+      <span id="text"></span>
     </div>
+    <script src="/script.js"></script>
   </body>
 </html>
