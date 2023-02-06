@@ -6,7 +6,7 @@ MSc. Eng. Ricardo Martinez.
 
 IT Professional.
 
-Research Engineer at [DIMA](https://www.tu.berlin/dima) currently focused on implementing the front-end component of a Data Debugger application in the context of [Wayang Cross-Platform System](https://wayang.apache.org/).
+Research Engineer at [DIMA](https://www.tu.berlin/dima) currently focused on implementing the WebUI of a Data Debugger application in the context of [Wayang Cross-Platform System](https://wayang.apache.org/).
 
 Former Research Engineer at [DFKI](https://www.dfki.de/web/), Core Architecture team in the [Agora Project](https://www.agora-ecosystem.com) and Java developer.
 
