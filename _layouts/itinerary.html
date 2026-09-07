@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trip Itinerary Visualizer</title>
+<style>
+  :root {
+    --accent: #6366f1;
+    --accent-light: #e0e7ff;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --border: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-hover: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding: 24px;
+    min-height: 100vh;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--text-secondary); font-size: 14px; margin-bottom: 20px; }
+  .card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .card-header {
+    background: var(--bg-secondary);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-header span { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  textarea {
+    width: 100%;
+    min-height: 200px;
+    border: none;
+    padding: 16px;
+    font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+    font-size: 13px;
+    resize: vertical;
+    outline: none;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+  .controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  button:hover { opacity: 0.9; transform: translateY(-1px); }
+  button.secondary {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  button.ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+  }
+  button.small { font-size: 12px; padding: 4px 10px; }
+  label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  input[type="checkbox"] { accent-color: var(--accent); }
+  .stats-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    min-width: 90px;
+    text-align: center;
+  }
+  .stat-value { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .timeline-day { margin-bottom: 28px; }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+  .day-badge {
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .day-date { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    padding-bottom: 20px;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-line {
+    position: absolute;
+    left: 19px;
+    top: 40px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item:last-child .timeline-line { display: none; }
+  .timeline-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    z-index: 1;
+    border: 3px solid white;
+    box-shadow: var(--shadow);
+  }
+  .timeline-content { flex: 1; min-width: 0; }
+  .timeline-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    transition: all 0.2s ease;
+  }
+  .timeline-card:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-hover);
+  }
+  .time-badge {
+    display: inline-block;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  .item-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .item-details { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .item-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .booking-ref { background: #dcfce7; color: #166534; font-family: monospace; font-weight: 600; }
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-secondary);
+  }
+  .empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
+  .type-flight { background: #dbeafe; }
+  .type-hotel, .type-checkin, .type-checkout { background: #ffedd5; }
+  .type-activity, .type-tour { background: #f3e8ff; }
+  .type-restaurant, .type-dining { background: #dcfce7; }
+  .type-transport, .type-train, .type-bus { background: #fce7f3; }
+  .type-default { background: #f1f5f9; }
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    h1 { font-size: 20px; }
+  }
+</style>
+<base target="_blank">
+</head>
+<body>
+<div class="container">
+  <h1>🗺️ Trip Itinerary Visualizer</h1>
+  <p class="subtitle">Paste your CSV below. The timeline updates instantly as you edit.</p>
+
+  <div class="card">
+    <div class="card-header">
+      <span>📄 CSV Data</span>
+      <div style="display: flex; gap: 8px;">
+        <button class="secondary small" onclick="loadExample()">Load Example</button>
+        <button class="ghost small" onclick="clearCSV()">Clear</button>
+      </div>
+    </div>
+    <textarea id="csvInput" placeholder="timestamp,type,title,details,duration_minutes,location,booking_ref,notes
+2026-09-15T08:30,flight,Flight to Paris,AF1234 Business,90,CDG,ABC123,Check-in online
+2026-09-15T11:00,checkin,Hotel Check-in,Le Marais Boutique,30,Paris,REF456,Early check-in requested
+..."></textarea>
+  </div>
+
+  <div class="controls">
+    <button onclick="renderItinerary()">🔄 Update Itinerary</button>
+    <label><input type="checkbox" id="groupByDay" checked onchange="renderItinerary()"> Group by day</label>
+    <label><input type="checkbox" id="showBookingRefs" checked onchange="renderItinerary()"> Show booking refs</label>
+  </div>
+
+  <div id="statsBar" class="stats-bar" style="display: none;"></div>
+  <div id="timeline"></div>
+
+  <div id="emptyState" class="card empty-state" style="display: none;">
+    <div class="emoji">✈️</div>
+    <p>No itinerary data yet. Load the example or paste your CSV to get started.</p>
+  </div>
+</div>
+
+<script>
+const TYPE_CONFIG = {
+  flight: { icon: '✈️', color: '#1976d2', label: 'Flight' },
+  hotel: { icon: '🏨', color: '#f57c00', label: 'Hotel' },
+  checkin: { icon: '🏨', color: '#f57c00', label: 'Check-in' },
+  checkout: { icon: '🚪', color: '#f57c00', label: 'Check-out' },
+  activity: { icon: '🎯', color: '#7b1fa2', label: 'Activity' },
+  tour: { icon: '📸', color: '#7b1fa2', label: 'Tour' },
+  restaurant: { icon: '🍽️', color: '#388e3c', label: 'Restaurant' },
+  dining: { icon: '🍽️', color: '#388e3c', label: 'Dining' },
+  transport: { icon: '🚗', color: '#c2185b', label: 'Transport' },
+  train: { icon: '🚆', color: '#c2185b', label: 'Train' },
+  bus: { icon: '🚌', color: '#c2185b', label: 'Bus' },
+  default: { icon: '📍', color: '#616161', label: 'Event' }
+};
+
+const EXAMPLE_CSV = `timestamp,type,title,details,duration_minutes,location,booking_ref,notes
+2026-09-15T06:30,flight,Flight AF1023,Paris CDG → Rome FCO,130,CDG Terminal 2F,ABC123456,Arrive 08:40. Business class.
+2026-09-15T10:00,transport,Leonardo Express,Airport to Termini,32,Rome,,
+2026-09-15T11:00,checkin,Hotel Artis,Rome city center,15,Via delle Fornaci 5,REF78910,Early check-in confirmed
+2026-09-15T14:00,activity,Colosseum Guided Tour,Skip-the-line entry,120,Colosseum,TICKET-4455,Meet guide at metro exit
+2026-09-15T19:30,restaurant,Dinner at Roscioli,Traditional Roman cuisine,90,Via dei Giubbonari 21,,
+2026-09-16T07:30,activity,Vatican Early Access,Sistine Chapel + Museums,240,Vatican City,TICKET-9988,Breakfast included
+2026-09-16T13:00,restaurant,Lunch near Vatican,,60,Via della Conciliazione,,
+2026-09-16T15:00,activity,St. Peter's Basilica,Climb dome optional,90,Vatican City,,Dress code: covered shoulders/knees
+2026-09-16T18:00,activity,Evening walk,Trastevere neighborhood,120,Trastevere,,
+2026-09-17T09:00,activity,Borghese Gallery,Timed entry reservation,150,Villa Borghese,TICKET-2233,No bags allowed inside
+2026-09-17T13:00,restaurant,Lunch at Flavio al Velavevodetto,,90,Testaccio,,
+2026-09-17T16:00,activity,Roman Forum & Palatine,Ancient Rome tour,150,Roman Forum,,
+2026-09-17T20:00,restaurant,Farewell Dinner at Pierluigi,Seafood specialist,120,Piazza de' Ricci 144,RES-8822,Outdoor terrace requested
+2026-09-18T08:00,checkout,Hotel Artis,Leave luggage at reception,10,Via delle Fornaci 5,,
+2026-09-18T09:30,transport,Taxi to Airport,,45,FCO,,
+2026-09-18T12:15,flight,Flight AF1024,Rome FCO → Paris CDG,125,FCO Terminal 1,ABC123456,Gate opens 11:15`;
+
+function loadExample() {
+  document.getElementById('csvInput').value = EXAMPLE_CSV;
+  renderItinerary();
+}
+function clearCSV() {
+  document.getElementById('csvInput').value = '';
+  renderItinerary();
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+  const items = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    const values = line.split(',');
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h] = values[idx] ? values[idx].trim() : ''; });
+    if (obj.timestamp) {
+      obj._date = new Date(obj.timestamp);
+      items.push(obj);
+    }
+  }
+  return items.sort((a, b) => a._date - b._date);
+}
+
+function formatDate(date) {
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
+}
+function formatTime(date) {
+  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+}
+function getTypeConfig(type) {
+  return TYPE_CONFIG[(type || '').toLowerCase().trim()] || TYPE_CONFIG.default;
+}
+
+function renderItinerary() {
+  const csvText = document.getElementById('csvInput').value;
+  const timeline = document.getElementById('timeline');
+  const emptyState = document.getElementById('emptyState');
+  const statsBar = document.getElementById('statsBar');
+  const groupByDay = document.getElementById('groupByDay').checked;
+  const showBookingRefs = document.getElementById('showBookingRefs').checked;
+
+  if (!csvText.trim()) {
+    timeline.innerHTML = '';
+    statsBar.style.display = 'none';
+    emptyState.style.display = 'block';
+    return;
+  }
+
+  const items = parseCSV(csvText);
+  if (items.length === 0) {
+    timeline.innerHTML = '<div style="color: var(--text-secondary); text-align: center; padding: 32px;">Could not parse CSV. Make sure first row has headers and data rows follow.</div>';
+    statsBar.style.display = 'none';
+    emptyState.style.display = 'none';
+    return;
+  }
+
+  emptyState.style.display = 'none';
+
+  const types = {};
+  let totalDuration = 0;
+  items.forEach(item => {
+    types[item.type || 'event'] = (types[item.type || 'event'] || 0) + 1;
+    totalDuration += parseInt(item.duration_minutes) || 0;
+  });
+
+  statsBar.innerHTML = `
+    <div class="stat-card"><div class="stat-value">${items.length}</div><div class="stat-label">Events</div></div>
+    <div class="stat-card"><div class="stat-value">${Math.ceil(totalDuration / 60)}h</div><div class="stat-label">Planned</div></div>
+    <div class="stat-card"><div class="stat-value">${Object.keys(types).length}</div><div class="stat-label">Categories</div></div>
+  `;
+  statsBar.style.display = 'flex';
+
+  let groups = [];
+  if (groupByDay) {
+    const dayMap = {};
+    items.forEach(item => {
+      const key = item._date.toDateString();
+      if (!dayMap[key]) dayMap[key] = [];
+      dayMap[key].push(item);
+    });
+    groups = Object.entries(dayMap).map(([k, v]) => ({ date: new Date(k), items: v }));
+  } else {
+    groups = [{ date: null, items }];
+  }
+
+  timeline.innerHTML = groups.map((group, gIdx) => {
+    const dayHeader = group.date ? `
+      <div class="day-header">
+        <span class="day-badge">Day ${gIdx + 1}</span>
+        <span class="day-date">${formatDate(group.date)}</span>
+      </div>` : '';
+
+    const itemsHtml = group.items.map((item) => {
+      const cfg = getTypeConfig(item.type);
+      const timeStr = formatTime(item._date);
+      const duration = item.duration_minutes ? `${item.duration_minutes} min` : '';
+      const metaTags = [];
+      if (item.location) metaTags.push(`<span class="meta-tag">📍 ${item.location}</span>`);
+      if (duration) metaTags.push(`<span class="meta-tag">⏱️ ${duration}</span>`);
+      if (showBookingRefs && item.booking_ref) metaTags.push(`<span class="meta-tag booking-ref">🔖 ${item.booking_ref}</span>`);
+      if (item.notes) metaTags.push(`<span class="meta-tag">📝 ${item.notes}</span>`);
+
+      return `
+        <div class="timeline-item">
+          <div class="timeline-line"></div>
+          <div class="timeline-icon type-${(item.type || 'default').toLowerCase()}" style="color: ${cfg.color};">${cfg.icon}</div>
+          <div class="timeline-content">
+            <div class="timeline-card">
+              <span class="time-badge">${timeStr}</span>
+              <div class="item-title">${item.title || 'Untitled'}</div>
+              ${item.details ? `<div class="item-details">${item.details}</div>` : ''}
+              ${metaTags.length ? `<div class="item-meta">${metaTags.join('')}</div>` : ''}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    return `<div class="timeline-day">${dayHeader}<div>${itemsHtml}</div></div>`;
+  }).join('');
+}
+
+const textarea = document.getElementById('csvInput');
+textarea.addEventListener('input', () => {
+  clearTimeout(window._renderTimeout);
+  window._renderTimeout = setTimeout(renderItinerary, 300);
+});
+
+renderItinerary();
+</script>
+</body>
+</html>
